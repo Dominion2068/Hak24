@@ -182,7 +182,7 @@ if expand == 'Current Status':
         C_Count = no['Practice'].value_counts().reset_index().rename(columns={'count': 'No RTW_Count'})
         C_Count = C_Count.head(20)
 
-        fig = px.bar(C_Count,y='Practice', x='No RTW_Count', title = '', width=800, height=700)
+        fig = px.bar(C_Count,y='Practice', x='No RTW_Count', title = '', width=800, height=850)
         fig.update_xaxes(showgrid=True, ticks="outside", tickson="boundaries", categoryorder = 'total descending')
         fig.update_layout(yaxis=dict(autorange="reversed"))
         fig.update_traces(marker_color=['#0d0887', '#46039f', '#7201a8', '#9c179e', '#bd3786', '#d8576b',
