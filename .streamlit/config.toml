@@ -1,1 +1,14 @@
+[theme]
+primaryColor="#2c8a13"
+backgroundColor="#0e1117"
+secondaryBackgroundColor="#31333F"
+textColor="#fafafa"
+font="sans serif"
+
+[server]
+maxMessageSize = 400
+enableXsrfProtection = false
+enableCORS = false
+
+
 
