@@ -176,6 +176,8 @@ if expand == 'Current Status':
         st.metric('Requiring Sharecode Check',req1, help = 'Employees with non-British passports - Unverified for Work')
     with vagc:
         st.metric("Employees With no Records",rec1, help = "They dont have documents in the required folders - Some of these employees are leavers")
+    
+    st.write('---')
     vga, vgb = st.columns([1, 0.6])
 
     with vgb:
