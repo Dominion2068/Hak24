@@ -8,4 +8,4 @@ plotly.express==0.4.1
 requests==2.27.1
 toml==0.10.2
 click==8.1.7
-wordcloud==1.
+wordcloud==1.9.2
