@@ -101,6 +101,8 @@ rec = RTW_Data[(RTW_Data['Comment'] == 'No Records')]
 # rec
 rec1 = len(rec)
 
+blurry = RTW_Data[(RTW_Data['Comment'] == 'Blurry Passport Details')]
+# blurry
 
 # for name, group in duplicate_rows.groupby('Names'):
 #     unique_mhr_numbers = group['MHR_REF'].nunique()
@@ -221,7 +223,7 @@ if expand == 'Current Status':
 if expand == 'Reports, Search and Filter':
 
     # st.write('**Generate and Download Dataset Reports for Follow-up**')
-    reports = ['For iTrent Upload','No RTW','Duplicate Names','Employees with Diff MHR Numbers', "Birth Cert. List", 'Already Uploaded','No Records']
+    reports = ['For iTrent Upload','No RTW','Duplicate Names','Employees with Diff MHR Numbers', "Birth Cert. List", 'Already Uploaded','No Records','Blurry Passports']
 
 
     fileName_csv = ''
@@ -341,6 +343,13 @@ if expand == 'Reports, Search and Filter':
             rec
             fileName_csv = 'No RTW.csv'
             fileName = 'No RTW'
+            dodi()
+        
+        if repo =='Blurry Passports':
+            df = blurry
+            blurry
+            fileName_csv = 'Blurry Passport List.csv'
+            fileName = 'Blurry Passport List'
             dodi()
     st.write('---')
 
