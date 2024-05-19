@@ -15,14 +15,14 @@ import plotly.graph_objects as go
 
 # st.set_page_config(page_title=None, page_icon=None, layout="centered", initial_sidebar_state="auto", menu_items=None)
 st.set_page_config(layout = 'wide', page_title="RTW",page_icon= '')
-# # hide_st_style = """
-#             <style>
-#             #MainMenu {visibility: hidden;}
-#             footer {visibility: hidden;}
-#             header {visibility: hidden;}
-#             </style>
-#             """
-# st.markdown(hide_st_style, unsafe_allow_html=True)
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 col1, col2, col3, = st.columns([0.6, 1, 0.5])
