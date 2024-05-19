@@ -15,14 +15,14 @@ import plotly.graph_objects as go
 
 # st.set_page_config(page_title=None, page_icon=None, layout="centered", initial_sidebar_state="auto", menu_items=None)
 st.set_page_config(layout = 'wide', page_title="RTW",page_icon= '')
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+# # hide_st_style = """
+#             <style>
+#             #MainMenu {visibility: hidden;}
+#             footer {visibility: hidden;}
+#             header {visibility: hidden;}
+#             </style>
+#             """
+# st.markdown(hide_st_style, unsafe_allow_html=True)
 st.set_option('deprecation.showPyplotGlobalUse', False)
 
 col1, col2, col3, = st.columns([0.6, 1, 0.5])
@@ -83,6 +83,8 @@ practices = (RTW_Data['Practice'].nunique())
 # dup = RTW_Data[(RTW_Data['Comment'] == 'Duplicate')]
 duplicate_rows = RTW_Data[RTW_Data.duplicated(subset=['Names'], keep=False)]
 duplicate_rows.sort_values(by='Names', inplace=True)
+# duplicate_rows
+
 
 dup = duplicate_rows[['Names']].nunique()
 df = duplicate_rows.groupby('Names').filter(lambda x: x['MHR_REF'].nunique() > 1)
@@ -151,11 +153,32 @@ if expand == 'Current Status':
                         (RTW_Data['Comment'] == 'Limited RTW Status') | (RTW_Data['Comment'] == 'No RTW - Leaver')
                         
                         ]
-        C_Count1 = C_Count['Comment'].value_counts().reset_index().rename(columns={'count': 'Current-Status%'})
-        
+        # Identify duplicated names
+        duplicated_names = RTW_Data[RTW_Data.duplicated(subset='Names', keep=False)]
 
-        labels = C_Count1['Comment'].tolist()
-        values = C_Count1['Current-Status%'].tolist()
+        # Count the number of duplicate names
+        duplicate_count = len(duplicated_names['Names'].unique())
+        # st.write(duplicate_count)
+
+        # Create a DataFrame for the duplicate count
+        duplicate_count_df = pd.DataFrame({'Category': ['Duplicates'], 'Count': [duplicate_count]})
+
+        # Filtered DataFrame based on specified comment conditions
+        comments_of_interest = ['No RTW', 'Sharecode Check Required', 'No Records', 
+                                'Blurry Passport Details', 'Limited RTW Status', 
+                                'No RTW - Leaver', 'Valid RTW']
+
+        filtered_comments = RTW_Data[RTW_Data['Comment'].isin(comments_of_interest)]
+
+        # Count the occurrences of each specified comment
+        comment_counts = filtered_comments['Comment'].value_counts().reset_index()
+        comment_counts.columns = ['Category', 'Count']
+
+        # Combine the counts into a single DataFrame
+        combined_counts = pd.concat([comment_counts, duplicate_count_df]).reset_index(drop=True)
+
+        labels = combined_counts['Category'].tolist()
+        values = combined_counts['Count'].tolist()
 
         fig = go.Figure(data=[go.Pie(labels=labels, values=values, pull=[0.1, 0.1, 0.2, 0.1], textinfo='label+percent')])
         fig.update_layout(margin=dict(t=0, b=0, l=0, r=0), showlegend=False)
@@ -627,3 +650,11 @@ if expand == 'Reports, Search and Filter':
 #                     st.write(converted_df)
 #                 except ValueError as e:
 #                     st.error(str(e))
+
+
+
+
+
+
+
+
