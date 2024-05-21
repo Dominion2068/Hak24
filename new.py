@@ -104,6 +104,13 @@ rec = RTW_Data[(RTW_Data['Comment'] == 'No Records')]
 rec1 = len(rec)
 
 blurry = RTW_Data[(RTW_Data['Comment'] == 'Blurry Passport Details')]
+
+ILR = RTW_Data[(RTW_Data['Comment'] == 'ILR Status')]
+ILR1 = len(ILR)
+
+hq = RTW_Data[(RTW_Data['Comment'] == 'Head Office')]
+hq1 = len(hq)
+# ILR
 # blurry
 
 # for name, group in duplicate_rows.groupby('Names'):
@@ -196,12 +203,16 @@ if expand == 'Current Status':
 
 
 
-    vaga, vagb, vagc, vagd = st.columns([1, 0.6, 0.6, 1])
-    with vagb:
+    vaga, vagb, vagc, vagd = st.columns([1, 1, 1, 0.6])
+    with vaga:
         st.metric('Requiring Sharecode Check',req1, help = 'Employees with non-British passports - Unverified for Work')
-    with vagc:
+    with vagb:
         st.metric("Employees With no Records",rec1, help = "They dont have documents in the required folders - Some of these employees are leavers")
-    
+    with vagc:
+        st.metric("Employees With Indefinite Leave to Remain",ILR1, help = "Some of these employees did not present their passports")
+    with vagd:
+        st.metric("Head Office Employees",hq1)
+
     st.write('---')
     vga, vgb = st.columns([1, 0.6])
 
@@ -246,7 +257,9 @@ if expand == 'Current Status':
 if expand == 'Reports, Search and Filter':
 
     # st.write('**Generate and Download Dataset Reports for Follow-up**')
-    reports = ['For iTrent Upload','No RTW','Duplicate Names','Employees with Diff MHR Numbers', "Birth Cert. List", 'Already Uploaded','No Records','Blurry Passports']
+    reports = ['For iTrent Upload','No RTW','Duplicate Names','Employees with Diff MHR Numbers', 
+               "Birth Cert. List", 'Already Uploaded','No Records','Blurry Passports','Head Office List',
+               'ILR Status']
 
 
     fileName_csv = ''
@@ -374,6 +387,25 @@ if expand == 'Reports, Search and Filter':
             fileName_csv = 'Blurry Passport List.csv'
             fileName = 'Blurry Passport List'
             dodi()
+
+        if repo =='Head Office List':
+            HQ = RTW_Data[(RTW_Data['Comment'] == 'Head Office')]
+            HQ = HQ[['Names', 'Practice', 'MHR_REF']]
+            df = HQ
+            HQ
+            fileName_csv = 'Head Office List.csv'
+            fileName = 'Head Office List'
+            dodi()
+        
+        if repo =='ILR Status':
+            ILR = RTW_Data[(RTW_Data['Comment'] == 'ILR Status')]
+            ILR = ILR[['Names', 'Practice', 'MHR_REF', 'PASSPORT_NO']]
+            df = ILR
+            ILR
+            fileName_csv = 'ILR Status.csv'
+            fileName = 'ILR Status'
+            dodi()
+
     st.write('---')
 
 
@@ -397,6 +429,10 @@ if expand == 'Reports, Search and Filter':
             df
         elif repo == 'Birth Cert. List':
             st.write('Names of Practice and Number of Employees whose RTW Docs are Birth Certificates')
+            df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
+            df
+        elif repo == 'Head Office List':
+            st.write('This is the Head Office List')
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         else:
@@ -653,7 +689,7 @@ if expand == 'Reports, Search and Filter':
 
 
 
-
+# st.text(RTW_Data['Comment'].unique())
 
 
 
