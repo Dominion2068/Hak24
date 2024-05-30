@@ -442,21 +442,21 @@ if expand == 'Reports, Search and Filter':
         st.write('')
         st.write('**Summary**')
         if repo == 'For iTrent Upload':
-            st.write('Names of Practice and Number of Employees with Correct Right-to-Work Documents')
+            st.write('Employees with Correct Right-to-Work Documents')
             yeah = RTW_Data[(RTW_Data['Comment'] == 'RTW-OKAY')]
             df = yeah[['MHR_REF', 'ISSUE_DATE', 'PASSPORT_NO','EXPIRY_DATE', 'COUNTRY', 'Practice']]
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         elif repo == 'Employees with Diff MHR Numbers':
-            st.write('Names of Practice and Number of Employees with more than one MHR Numbers')
+            st.write('Employees with more than one MHR Numbers')
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         elif repo == 'Already Uploaded':
-            st.write('Names of Practice and Number of Employees whose Docs are Already Uploded on iTrent')
+            st.write('Employees whose Docs are Already Uploded on iTrent')
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         elif repo == 'Birth Cert. List':
-            st.write('Names of Practice and Number of Employees whose RTW Docs are Birth Certificates')
+            st.write('Employees whose RTW Documents are Birth Certificates')
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         elif repo == 'Head Office List':
@@ -472,7 +472,7 @@ if expand == 'Reports, Search and Filter':
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         else:
-            st.write('Names of Practice and Number of Employees with',repo)
+            st.write('Employees with',repo)
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         
@@ -674,9 +674,9 @@ if expand == "Updates":
             lacked RTW documentation actually have their documents stored in the old system.''')
     st.write(f'''**30th May 2024**     
             Based on the meeting I had with Aadil on the 29th of May 2024, I added 2 reports and 2 metrics. The reports are:\n'''
-            f"- Employees who requires sharecodes to complete their RTW and\n"
+            f"- Employees who require sharecodes to complete their RTW and\n"
             f"- Employees with Limited RTW Status\n")
-    st.write(f'''The matrics: are the number of employees using Birth Certificates as their RTW and those with   
+    st.write(f'''The metrics: are the number of employees using Birth Certificates as their RTW and those with   
             expiry status on their RTW. Both metrics are on the report page.  
             ''')
 
