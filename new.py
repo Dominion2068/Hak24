@@ -31,6 +31,7 @@ st.write('---')
 
 expand = st.radio(label = (f"**Click to Explore**"), options = ['Hold',
                                                             "About",
+                                                            "Updates",
                                                             'Current Status',
                                                             'Reports, Search and Filter'
                                                             ])
@@ -112,6 +113,14 @@ hq = RTW_Data[(RTW_Data['Comment'] == 'Head Office')]
 hq1 = len(hq)
 # ILR
 # blurry
+yeah = RTW_Data[(RTW_Data['Comment'] == 'Birth Certificate')]
+BRT = len(yeah)
+
+limt = RTW_Data[(RTW_Data['Comment'] == 'Limited RTW Status')]
+LIM = len(limt)
+
+incom = RTW_Data[(RTW_Data['Comment'] == 'Incomplete RTW')]
+#LIM = len(limt)
 
 # for name, group in duplicate_rows.groupby('Names'):
 #     unique_mhr_numbers = group['MHR_REF'].nunique()
@@ -255,13 +264,13 @@ if expand == 'Current Status':
 
 
 if expand == 'Reports, Search and Filter':
-
+    #with v5:
     # st.write('**Generate and Download Dataset Reports for Follow-up**')
     reports = ['For iTrent Upload','No RTW','Duplicate Names','Employees with Diff MHR Numbers', 
                "Birth Cert. List", 'Already Uploaded','No Records','Blurry Passports','Head Office List',
-               'ILR Status']
+               'ILR Status', 'Sharecode Check Required', 'Limited RTW Status']
 
-
+    st.write(' ')
     fileName_csv = ''
 
     def download():
@@ -317,6 +326,8 @@ if expand == 'Reports, Search and Filter':
             download()
 
     with col1:
+        st.metric('Employees using Birth Cert. as RTW',BRT, help = 'NOTE: They are required to have evidence of NI')
+        st.write('')
         repo = st.selectbox('Select a Report to Generate and Download', reports)
 
         if repo == 'Employees with Diff MHR Numbers':
@@ -405,13 +416,30 @@ if expand == 'Reports, Search and Filter':
             fileName_csv = 'ILR Status.csv'
             fileName = 'ILR Status'
             dodi()
+        if repo =='Sharecode Check Required':
+            share = RTW_Data[(RTW_Data['Comment'] == 'Sharecode Check Required')]
+            share = share[['Names', 'Practice', 'MHR_REF', 'COUNTRY']]
+            df = share
+            share
+            fileName_csv = 'Sharecode Check.csv'
+            fileName = 'Sharecode Check'
+            dodi()
+
+        if repo =='Limited RTW Status':
+            limited = RTW_Data[(RTW_Data['Comment'] == 'Limited RTW Status')]
+            limited = limited[['Names', 'Practice', 'MHR_REF', 'COUNTRY']]
+            df = limited
+            limited
+            fileName_csv = 'Limited_RTW.csv'
+            fileName = 'Limited_RTW'
+            dodi()
 
     st.write('---')
 
 
     with col2:
-        # st.write(' ')
-        # st.write(' ')
+        st.metric('Employees with Limited RTW Status',LIM, help = 'NOTE: Their RTW has expiry status')
+        st.write('')
         st.write('**Summary**')
         if repo == 'For iTrent Upload':
             st.write('Names of Practice and Number of Employees with Correct Right-to-Work Documents')
@@ -433,6 +461,14 @@ if expand == 'Reports, Search and Filter':
             df
         elif repo == 'Head Office List':
             st.write('This is the Head Office List')
+            df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
+            df
+        elif repo == 'Sharecode Check Required':
+            st.write('Employees who require sharecode check')
+            df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
+            df
+        elif repo =='Limited RTW Status':
+            st.write('Employees with Limited RTW Status')
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         else:
@@ -631,7 +667,18 @@ if expand == 'Reports, Search and Filter':
                 st.write("Enter a search query to filter the data.")
         main()
 
-
+if expand == "Updates":
+    st.write(f'''**29th May 2024**  
+            Begin daily updates of the RTW status using documents downloaded from the old HR system.  
+            You may notice frequent changes, as I am discovering that some employees who previously  
+            lacked RTW documentation actually have their documents stored in the old system.''')
+    st.write(f'''**30th May 2024**     
+            Based on the meeting I had with Aadil on the 29th of May 2024, I added 2 reports and 2 metrics. The reports are:\n'''
+            f"- Employees who requires sharecodes to complete their RTW and\n"
+            f"- Employees with Limited RTW Status\n")
+    st.write(f'''The matrics: are the number of employees using Birth Certificates as their RTW and those with   
+            expiry status on their RTW. Both metrics are on the report page.  
+            ''')
 
 
 # st.text(RTW_Data.columns)
@@ -689,8 +736,41 @@ if expand == 'Reports, Search and Filter':
 
 
 
-# st.text(RTW_Data['Comment'].unique())
+#st.text(RTW_Data['Comment'].unique())
 
 
 
+
+
+
+
+# import rpy2.robjects as robjects
+
+# try:
+#     import rpy2.robjects as robjects
+# except OSError as e:
+#     try:
+#         import os
+#         import platform
+#         if platform.system() == 'Windows':
+#             os.environ["R_HOME"] = 'C:/Program Files/R/R-4.4.0'  # Your R version here 'R-4.0.3'
+#             os.environ["PATH"] = "C:/Program Files/R/R-4.4.0/bin/x64" + ";" + os.environ["PATH"]
+#         import rpy2.robjects as robjects
+#     except OSError:
+#         raise e
+
+
+    
+
+# r_code = st.text_area("Write R code here", height=200)
+
+# # Button to run R code
+# if st.button("Run R Code"):
+#     try:
+#         result = robjects.r(r_code)
+#         st.write("Result:", result)
+#     except Exception as e:
+#         st.error(f"Error: {e}")
+
+# st.text('joy')
 
