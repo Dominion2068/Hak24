@@ -212,15 +212,15 @@ if expand == 'Current Status':
 
 
 
-    vaga, vagb, vagc, vagd = st.columns([1, 1, 1, 0.6])
+    vaga, vagb, vagc = st.columns([1, 1, 1])
     with vaga:
         st.metric('Requiring Sharecode Check',req1, help = 'Employees with non-British passports - Unverified for Work')
     with vagb:
         st.metric("Employees With no Records",rec1, help = "They dont have documents in the required folders - Some of these employees are leavers")
     with vagc:
         st.metric("Employees With Indefinite Leave to Remain",ILR1, help = "Some of these employees did not present their passports")
-    with vagd:
-        st.metric("Head Office Employees",hq1)
+    # with vagd:
+    #     st.metric("Head Office Employees",hq1)
 
     st.write('---')
     vga, vgb = st.columns([1, 0.6])
@@ -267,7 +267,7 @@ if expand == 'Reports, Search and Filter':
     #with v5:
     # st.write('**Generate and Download Dataset Reports for Follow-up**')
     reports = ['For iTrent Upload','No RTW','Duplicate Names','Employees with Diff MHR Numbers', 
-               "Birth Cert. List", 'Already Uploaded','No Records','Blurry Passports','Head Office List',
+               "Birth Cert. List", 'Already Uploaded','No Records','Blurry Passports','HQ No Records',
                'ILR Status', 'Sharecode Check Required', 'Limited RTW Status']
 
     st.write(' ')
@@ -399,13 +399,13 @@ if expand == 'Reports, Search and Filter':
             fileName = 'Blurry Passport List'
             dodi()
 
-        if repo =='Head Office List':
-            HQ = RTW_Data[(RTW_Data['Comment'] == 'Head Office')]
+        if repo =='HQ No Records':
+            HQ = RTW_Data[(RTW_Data['Comment'] == 'HQ No Records')]
             HQ = HQ[['Names', 'Practice', 'MHR_REF']]
             df = HQ
             HQ
-            fileName_csv = 'Head Office List.csv'
-            fileName = 'Head Office List'
+            fileName_csv = 'HQ No Records.csv'
+            fileName = 'HQ No Records'
             dodi()
         
         if repo =='ILR Status':
@@ -459,8 +459,8 @@ if expand == 'Reports, Search and Filter':
             st.write('Employees whose RTW Documents are Birth Certificates')
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
-        elif repo == 'Head Office List':
-            st.write('This is the Head Office List')
+        elif repo == 'HQ No Records':
+            st.write('This is the Head Office Employees without Records')
             df = df['Practice'].value_counts().reset_index().rename(columns={'count': 'Number_of_Employees'})
             df
         elif repo == 'Sharecode Check Required':
@@ -679,6 +679,12 @@ if expand == "Updates":
     st.write(f'''The metrics: are the number of employees using Birth Certificates as their RTW and those with   
             expiry status on their RTW. Both metrics are on the report page.  
             ''')
+    st.write(f'''**5th June 2024**  
+            The RTW for Head Office staff were updated. This is work in progress because some employees'  
+            documents are missing and they have been captured as HQ No Records. I expect this to change soon  
+            as the shared folder is updated. There is no more stand-alone report for head office however,  
+            I have included the head office employees without records as a report.
+             ''')
 
 
 # st.text(RTW_Data.columns)
